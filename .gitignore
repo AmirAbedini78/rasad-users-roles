@@ -1,0 +1,22 @@
+# Environment / secrets
+api/.env
+front/.env
+docker/*.env
+!docker/*.env.example
+
+# Dependencies / builds
+api/vendor/
+front/node_modules/
+front/dist/
+api/public/build/
+
+# Runtime / logs
+*.log
+api/storage/logs/*.log
+api/.phpunit.result.cache
+
+# IDE / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

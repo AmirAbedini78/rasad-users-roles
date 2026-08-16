@@ -1,0 +1,37 @@
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    env_file:
+      - ./docker/api.env
+    ports:
+      - "8000:8000"
+    volumes:
+      - rasad_sqlite:/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          php -r 'exit(@file_get_contents("http://127.0.0.1:8000/api") === false ? 1 : 0);'
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+    restart: unless-stopped
+
+  front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    env_file:
+      - ./docker/front.env
+    ports:
+      - "5173:5173"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  rasad_sqlite:
